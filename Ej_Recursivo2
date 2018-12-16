@@ -1,0 +1,29 @@
+#!/usr/bin/env ciao-shell
+% -*- mode: ciao; -*-
+
+%%%%%%%%%%%%EJERCICIO2%%%%%%%%%%%%  
+                
+esmenor(0,1).
+esmenor(1,2).
+esmenor(2,3).
+esmenor(3,4).
+
+
+restar(0,0,0).% primero las reglas mas especificas.
+restar(A,1,C):-
+	esmenor(C,A).%Luego las reglas mas genrales.
+restar(A,B,C):-
+	esmenor(A1,A),
+	esmenor(B1,B),
+	restar(A1,B1,C).%Y las reglas mas generales con recursividad.
+
+%Explicacion: establecemos una relacion esmenor en el que el primer elemento es menor que el segundo siempre.
+
+%A continuacion hacemos una regla para que reste los valores que introducimos.
+%A y B ser  an los valores que queremos restar y C el resultado.
+%primero ponemos las reglas mas especificas , para el caso de que alguno de los valores sea = 0 ->  restar(0,0,0).
+%La siguiente regla dice que en el momento que B=1solo se decrementara A (quedando A=B)y hara la resta guardando el resultado en C.
+%Para el resto de casos mas generales por ejemplo restar(4,3,C)->esmenor(A1=?,A=4),es menor resta al de la cha 1 y lo guarda en la izq (A1=A-1,A)los mismo con    (B1,B)=> de momento tenemos esmenor(A1=3,A=4). y esmenor(B1=2,B=3).
+%a continuacion se llama a si mismo con restar(A1=3,B1=2,C).==>y vuelve a empezar con restar(A=3,B=2,C).mismo proceso...
+%y se queda con restar(A1=A=2,B1=B=1,C). COMO B=1 se va a restar(A=2,B=1;C).
+% entonces esmenor(C=A-1,A)=>esmenor(1,2).  y devuelve ?- C=1.
