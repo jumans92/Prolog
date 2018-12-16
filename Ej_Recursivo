@@ -1,0 +1,22 @@
+#!/usr/bin/env ciao-shell
+% -*- mode: ciao; -*-
+
+parent(maria,juan).%esto serian facts
+parent(paco,juan).
+parent(paco,liz).
+parent(juan,ana).
+parent(juan,pat).
+parent(pat,jim).
+
+
+%%%%%%%%% RECURSIVIDAD %%%%%%%%%
+
+%Para X y Z,X es antecesor de Z si X es padre de Z. Esto solo serviria para una generacion directa padre es antecesor del hijo pero si queremos que nos diga si un bisabuelo etc es antecesor o no tendremos que aplicar recursividad:
+
+%antecesor(X,Z):-parent(X,Z)--->antecesor():-parent(),parent() nos dara el abuelo si añadimo otro parent nos dara el bisabuelo etc...
+
+antecesor(X,Z):-
+  parent(X,Z).
+antecesor(X,Z):-   %Aqui empezamos Maria antecede a jim
+  parent(X,Y),     %Solo si maria es madre de juan
+  antecesor(Y,Z).  % y juan antecede a pat. X-> maria,Y->juan, Z->pat volvemos a la parte de arriba... 
