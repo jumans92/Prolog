@@ -1,0 +1,36 @@
+#!/usr/bin/env ciao-shell
+% -*- mode: ciao; -*-
+
+P1 = pto(1,1).
+P2 = pto(2,3).
+Linea = linea(P1,P2)= linea(pto(1,1),pto(2,3)).
+Tringulo = triangulo(pto(4,2),pto(6,4),pto(7,1)).
+
+% esto nos representaria una linea del pto 1,1 al pto 2,3
+% y un triangulo con puntos que le pasamos
+
+%El arbol que nos saldria sería P1=pto(root)
+%                                 |    |
+%                                 1    1
+
+%El arbol que nos saldria sería Linea=linea(root)
+%                                |      |
+%                               pto    pto
+%                               | |    | |
+%                               1 1    2 3
+
+
+%El arbol que nos saldria sería P1=point(root)
+%                                |    |    |
+%                               pto  pto  pto              
+%                               | |  | |  | |
+%                               4 2  6 4  7 1
+
+
+%(a+b)*(c-5).
+% *, +, - serían functor--> *(+(a,b), -(c,5)). 
+%El arbol que nos saldria sería   *(root)
+%                                 |    |
+%                                 +    -
+%                                | |  | |
+%                                a b  c 5
