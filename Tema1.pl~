@@ -1,0 +1,73 @@
+#!/usr/bin/env ciao-shell
+% -*- mode: ciao; -*-
+
+    hijo(juan).
+    padre(manolo).
+    
+eshijo(X,Y):-
+	padre(Y),
+	hijo(X).
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+meteren([C],C).
+lista([C|A],C).
+recorrerlista([_|C],B):-
+	recorrerlista(C,B).
+recorrerlista([_,B],B).
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+sum(Y,X):-
+	Y < X + 1, X is Y + 1, X=:=Y.
+%siempre dara error.
+
+%1.1 Definir relaciones
+%juan y pepe son argumentos y parent es el nombre de la relacion
+parent(maria,juan).%esto serian facts
+parent(paco,juan).
+parent(paco,liz).
+parent(juan,ana).
+parent(juan,pat).
+parent(pat,jim).
+%este arbol genealogico nos dice que maria es madre de juan, paco padre de juan y de liz, juan padre de ana y pat y pat madre de jim.
+
+%Si al compilar ponemos ?- parent(X,liz). estamos preguntando quienes es el padre de liz.
+
+% Otra opcion seria poner ?- Parent(juan,X). preguntando de quien es padre juan y nos dara la primera que encuentra que seria ana si a continuacion escribimos      ; nos dara el resto de soluciones.
+
+%Para saber quien es el abuelo de jim hariamos ?- parent(Y,jim),parent(X,Y).
+%O para saber quien es el nieto de Paco hariamos ?-  parent(paco,X),parent(X,Y).
+
+
+female(maria).
+male(juan).
+male(paco).
+female(liz).
+female(ana).
+female(pat).
+male(jim).
+
+%Otro ejemplo: descendencia(liz,paco). Para X e Y, Y desciende de X si X es padre de Y en codigo seria:
+desciende(Y,X):-parent(X,Y).% a esto se le llama reglas CONCLUSION:-CONDICION o HEAD:-BODY
+
+%definimos otra relacion madre.Para X e Y, X es madre de Y si X es parent de Y y X es female.
+madre(X,Y):-parent(X,Y),female(X).
+padre(X,Y):-parent(X,Y),male(X).
+abuelo(X,Z):-parent(X,Y),parent(Y,Z),male(X).
+hermana(X,Z):-parent(Y,X),parent(Y,Z),female(X).
+tienehijo(X):-parent(X,Y).
+%Ejercicio: Todo el que tiene hijo es feliz
+feliz(X):-parent(X,Y).
+esfeliz(X):-tienehijo(X).
+%Para todo X, si X tiene un hijo, este hijo tiene una hermana entonces X tiene 2 hijos.
+tienedoshijos(X):-tienehijo(X),hermana(Y,Z).
+%Otra form seria: tiene2hijos(X):-parent(X,Y),hermana(Y,Z).
+
+%%%%%%%%% RECURSIVIDAD %%%%%%%%%
+
+%Para X y Z,X es antecesor de Z si X es padre de Z. Esto solo serviria para una generacion directa padre es antecesor del hijo pero si queremos que nos diga si un bisabuelo etc es antecesor o no tendremos que aplicar recursividad:
+
+%antecesor(X,Z):-parent(X,Z)--->antecesor():-parent(),parent() nos dara el abuelo si añadimo otro parent nos dara el bisabuelo etc...
+antecesor(X,Z):-
+  parent(X,Z).
+antecesor(X,Z):-   %Aqui empezamos Maria antecede a jim
+  parent(X,Y),     %Solo si maria es madre de juan
+  antecesor(Y,Z).  % y juan antecede a pat. X-> maria,Y->juan, Z->pat volvemos a la parte de arriba... 
